@@ -163,7 +163,24 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+
+        bfr = self.best_future_reward(state)
+
+        if epsilon == False:
+            for state_action_pair in self.q:
+                if tuple(state) == state_action_pair[0] and self.q[state_action_pair] == bfr:
+                    return state_action_pair[1]
+
+        elif epsilon == True:
+            r = random.randint(1, int((1 / self.epsilon)))
+            if r < (1 / self.epsilon):
+                for state_action_pair in self.q:
+                    if tuple(state) == state_action_pair[0] and self.q[state_action_pair] == bfr:
+                        return state_action_pair[1]
+            else:
+                for state_action_pair in self.q:
+                    if tuple(state) == state_action_pair[0] and self.q[state_action_pair] != bfr:
+                        return state_action_pair[1]
 
 
 def train(n):
